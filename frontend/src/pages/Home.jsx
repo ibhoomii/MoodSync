@@ -1,76 +1,212 @@
 import { useState } from 'react'
-import InputSelector from '../components/InputSelector'
 import TextEmotion from '../components/TextEmotion'
-import FaceEmotion from '../components/FaceEmotion'
 import EmotionResult from '../components/EmotionResult'
 import SongCard from '../components/SongCard'
-import mockSongs from '../data/mockSongs'
 import { MusicIcon, SparkleIcon } from '../components/Icons'
 
-function Home() {
-  const [activeInput, setActiveInput] = useState(null)
-  const [result, setResult] = useState(null)
+const API_URL = 'http://127.0.0.1:5000'
 
-  const handleAnalyze = (mockResult) => {
-    setResult(mockResult)
-    window.setTimeout(() => {
-      document.getElementById('recommendations')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+function Home() {
+  const [result, setResult] = useState(null)
+  const [songs, setSongs] = useState([])
+  const [error, setError] = useState('')
+
+  const handleAnalyze = async (text) => {
+    setError('')
+    setResult(null)
+    setSongs([])
+
+    try {
+      // ==========================================
+      // 1. SEND TEXT TO ML MODEL
+      // ==========================================
+
+      const emotionResponse = await fetch(
+        `${API_URL}/api/text-emotion`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: text,
+          }),
+        },
+      )
+
+      if (!emotionResponse.ok) {
+        throw new Error(
+          'Emotion analysis failed.',
+        )
+      }
+
+      const emotionData =
+        await emotionResponse.json()
+
+      const detectedEmotion =
+        emotionData.emotion
+
+      const confidence =
+        Number(emotionData.confidence) * 100
+
+      // ==========================================
+      // 2. DISPLAY ML RESULT
+      // ==========================================
+
+      setResult({
+        emotion: detectedEmotion,
+        confidence: confidence.toFixed(2),
       })
-    }, 100)
+
+      // ==========================================
+      // 3. GET SONG RECOMMENDATIONS
+      // ==========================================
+
+      const recommendationResponse =
+        await fetch(
+          `${API_URL}/api/recommendations`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              emotion: detectedEmotion,
+            }),
+          },
+        )
+
+      if (!recommendationResponse.ok) {
+        throw new Error(
+          'Song recommendation failed.',
+        )
+      }
+
+      const recommendationData =
+        await recommendationResponse.json()
+
+      setSongs(recommendationData.songs)
+
+      // Scroll to results
+      window.setTimeout(() => {
+        document
+          .getElementById('recommendations')
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          })
+      }, 100)
+
+    } catch (error) {
+      console.error(error)
+
+      setError(
+        'Unable to connect to the MoodSync ML server. Make sure the Flask backend is running.',
+      )
+    }
   }
 
   return (
     <main id="top">
       <section className="hero">
         <div className="hero-copy">
-          <span className="hero-badge"><SparkleIcon /> Emotion-based music</span>
-          <h1>Music that matches your mood.</h1>
-          <p>Let AI understand your emotion and discover songs that fit your vibe.</p>
-          <a className="hero-link" href="#input-selector">
-            Start feeling the music <span aria-hidden="true">↓</span>
+          <span className="hero-badge">
+            <SparkleIcon />
+            Emotion-based music
+          </span>
+
+          <h1>
+            Music that matches your mood.
+          </h1>
+
+          <p>
+            Tell us how you’re feeling.
+            We’ll find the music.
+          </p>
+
+          <a
+            className="hero-link"
+            href="#emotion-input"
+          >
+            Analyze my mood
+            <span aria-hidden="true">↓</span>
           </a>
         </div>
 
-        <div className="hero-visual" aria-label="Music visual illustration">
+        <div
+          className="hero-visual"
+          aria-label="Music visual illustration"
+        >
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
+
           <div className="music-disc">
             <MusicIcon />
           </div>
-          <div className="floating-note note-one">♪</div>
-          <div className="floating-note note-two">♫</div>
-          <div className="floating-emoji">😊</div>
+
+          <div className="floating-note note-one">
+            ♪
+          </div>
+
+          <div className="floating-note note-two">
+            ♫
+          </div>
+
+          <div className="floating-emoji">
+            😊
+          </div>
         </div>
       </section>
 
-      <section id="input-selector">
-        <InputSelector onSelect={(inputType) => {
-          setActiveInput(inputType)
-          setResult(null)
-          window.setTimeout(() => {
-            document.getElementById('emotion-input')?.scrollIntoView({ behavior: 'smooth' })
-          }, 50)
-        }} />
-
-        <div id="emotion-input" className="input-flow">
-          {activeInput === 'text' && <TextEmotion onAnalyze={handleAnalyze} />}
-          {activeInput === 'face' && <FaceEmotion onAnalyze={handleAnalyze} />}
-        </div>
+      <section
+        id="emotion-input"
+        className="input-flow"
+      >
+        <TextEmotion
+          onAnalyze={handleAnalyze}
+        />
       </section>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
 
       {result && (
         <>
           <EmotionResult result={result} />
-          <section id="recommendations" className="recommendations">
+
+          <section
+            id="recommendations"
+            className="recommendations"
+          >
             <div className="section-heading">
-              <span className="eyebrow">Curated for you</span>
-              <h2>Songs for your mood</h2>
-              <p>Six mock recommendations based on your detected emotion.</p>
+              <span className="eyebrow">
+                Curated for you
+              </span>
+
+              <h2>
+                Songs for your mood
+              </h2>
+
+              <p>
+                Recommendations generated from
+                your detected emotion.
+              </p>
             </div>
+
             <div className="song-grid">
-              {mockSongs.map((song) => <SongCard key={song.id} song={song} />)}
+              {songs.map((song, index) => (
+                <SongCard
+                  key={`${song.title}-${index}`}
+                  song={{
+                    ...song,
+                    id: index + 1,
+                    mood: song.emotion,
+                  }}
+                />
+              ))}
             </div>
           </section>
         </>

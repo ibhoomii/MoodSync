@@ -1,0 +1,37 @@
+title,artist,emotion,genre,energy,valence
+Happy,Pharrell Williams,joy,pop,0.80,0.96
+Good as Hell,Lizzo,joy,pop,0.85,0.92
+Can't Stop the Feeling!,Justin Timberlake,joy,pop,0.88,0.95
+Walking on Sunshine,Katrina and the Waves,joy,pop,0.90,0.97
+On Top of the World,Imagine Dragons,joy,pop,0.82,0.93
+Best Day of My Life,American Authors,joy,pop,0.86,0.94
+Perfect,Ed Sheeran,love,pop,0.45,0.82
+All of Me,John Legend,love,rnb,0.40,0.78
+A Thousand Years,Christina Perri,love,pop,0.35,0.80
+Just the Way You Are,Bruno Mars,love,pop,0.65,0.88
+Thinking Out Loud,Ed Sheeran,love,pop,0.48,0.84
+Love Story,Taylor Swift,love,country,0.70,0.90
+Someone Like You,Adele,sadness,pop,0.30,0.20
+Let Her Go,Passenger,sadness,acoustic,0.28,0.25
+The Night We Met,Lord Huron,sadness,indie,0.25,0.18
+Lovely,Billie Eilish,sadness,pop,0.35,0.22
+When I Was Your Man,Bruno Mars,sadness,pop,0.32,0.24
+Fix You,Coldplay,sadness,rock,0.38,0.30
+Believer,Imagine Dragons,anger,rock,0.88,0.45
+Natural,Imagine Dragons,anger,rock,0.85,0.40
+Warriors,Imagine Dragons,anger,rock,0.90,0.48
+Numb,Linkin Park,anger,rock,0.82,0.35
+Breaking the Habit,Linkin Park,anger,rock,0.78,0.32
+In the End,Linkin Park,anger,rock,0.80,0.38
+Demons,Imagine Dragons,fear,rock,0.55,0.30
+Lovely,Billie Eilish,fear,pop,0.35,0.22
+Control,Halsey,fear,pop,0.65,0.28
+Breathe Me,Sia,fear,pop,0.40,0.25
+Everybody Hurts,R.E.M.,fear,rock,0.30,0.20
+Creep,Radiohead,fear,rock,0.45,0.18
+Surprise Yourself,Jack Garratt,surprise,pop,0.75,0.70
+Wow,Post Malone,surprise,pop,0.80,0.72
+Uptown Funk,Mark Ronson,surprise,funk,0.92,0.90
+Shake It Off,Taylor Swift,surprise,pop,0.88,0.91
+24K Magic,Bruno Mars,surprise,funk,0.90,0.88
+Adventure of a Lifetime,Coldplay,surprise,pop,0.78,0.85

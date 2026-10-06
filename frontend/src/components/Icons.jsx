@@ -17,15 +17,6 @@ export function MessageIcon() {
   )
 }
 
-export function CameraIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M14.5 4 16 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3l1.5-3h5Z" />
-      <circle cx="12" cy="13" r="4" />
-    </svg>
-  )
-}
-
 export function SparkleIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -39,23 +30,6 @@ export function PlayIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="m9 7 8 5-8 5V7Z" />
-    </svg>
-  )
-}
-
-export function UploadIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 16V4m0 0L7 9m5-5 5 5" />
-      <path d="M5 14v5h14v-5" />
-    </svg>
-  )
-}
-
-export function CloseIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="m6 6 12 12M18 6 6 18" />
     </svg>
   )
 }
